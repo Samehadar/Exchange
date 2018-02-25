@@ -26,15 +26,6 @@ object Parser extends JavaTokenParsers {
     }.toList
   }
 
-  def printToFile[T](objects: List[T], resourceFile: String): Unit = {
-    //have no time to war with separator
-    val writer = new PrintWriter(new File(getClass.getResource("/" + resourceFile).toURI))
-
-    objects.foreach(obj => writer.println(obj.toString))
-
-    writer.close()
-  }
-
   def objClient: Parser[Client] =
     clientNameR ~
       '\t' ~ wholeNumber ~

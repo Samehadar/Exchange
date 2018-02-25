@@ -3,15 +3,17 @@ package com.samehadar.exchange
 import com.samehadar.exchange.data.{Bid, Buy, Client, Sell}
 import org.slf4j.LoggerFactory
 
+import scala.annotation.tailrec
+
 object BidMatcher {
 
-  val log = LoggerFactory.getLogger(BidMatcher.getClass)
+  private val log = LoggerFactory.getLogger("MATCHER")
 
   def simpleMatch(bids: List[Bid], clients: Map[String, Client]): Map[String, Client] = {
 
     var updatableClients = clients
 
-    def insideMatch(bids: List[Bid]): Unit = bids match {
+    @tailrec def insideMatch(bids: List[Bid]): Unit = bids match {
       case Nil => ()
       case bid :: tail =>
 //        println(s"sMatch from: $bid")

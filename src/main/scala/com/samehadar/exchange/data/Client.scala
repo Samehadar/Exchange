@@ -8,10 +8,12 @@ package com.samehadar.exchange.data
   * @param cCount Баланс по ценной бумаге "C"
   * @param dCount Баланс по ценной бумаге "D"
   */
-case class Client(name: String, balance: Int, aCount: Int, bCount: Int, cCount: Int, dCount: Int) {
+case class Client(name: String, balance: Int, aCount: Int, bCount: Int, cCount: Int, dCount: Int) extends Comparable[Client] {
   override def toString: String = {
     name + '\t' + balance + '\t' + aCount + '\t' + bCount + '\t' + cCount + '\t' + dCount
   }
+
+  override def compareTo(that: Client): Int = name.drop(1).toInt compareTo that.name.drop(1).toInt
 }
 
 object Client {
