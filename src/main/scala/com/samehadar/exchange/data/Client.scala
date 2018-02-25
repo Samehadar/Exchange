@@ -31,13 +31,12 @@ object Client {
         (buyer.copy(balance = buyerBalance, bCount = buyer.bCount + bid.paperCount),
           seller.copy(balance = sellerBalance, bCount = seller.bCount - bid.paperCount))
       case C =>
-        (buyer.copy(balance = buyerBalance, bCount = buyer.bCount + bid.paperCount),
-          seller.copy(balance = sellerBalance, bCount = seller.bCount - bid.paperCount))
+        (buyer.copy(balance = buyerBalance, cCount = buyer.cCount + bid.paperCount),
+          seller.copy(balance = sellerBalance, cCount = seller.cCount - bid.paperCount))
       case D =>
-        (buyer.copy(balance = buyerBalance, bCount = buyer.bCount + bid.paperCount),
-          seller.copy(balance = sellerBalance, bCount = seller.bCount - bid.paperCount))
+        (buyer.copy(balance = buyerBalance, dCount = buyer.dCount + bid.paperCount),
+          seller.copy(balance = sellerBalance, dCount = seller.dCount - bid.paperCount))
     }
-
   }
 
 }
