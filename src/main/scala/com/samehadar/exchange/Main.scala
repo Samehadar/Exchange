@@ -13,6 +13,6 @@ object Main extends App {
 
   val result = BidMatcher.simpleMatch(bids, clients).values.toList.sorted
 
-  saveToWorkingDirectory(result, "updatedClients.txt")
-  saveToTargetDirectory(result, "updatedClients.txt")
+  saveToWorkingDirectory(result, "results.txt")
+  saveToTargetDirectory(result, "results.txt")
 }

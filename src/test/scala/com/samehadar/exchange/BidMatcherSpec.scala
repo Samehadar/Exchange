@@ -1,7 +1,6 @@
 package com.samehadar.exchange
 
 import org.scalatest.FlatSpec
-import com.samehadar.exchange.BidMatcher._
 import com.samehadar.exchange.data.{A, Bid, Client, Sell}
 import com.samehadar.exchange.util.Parser
 import org.scalatest.BeforeAndAfter
