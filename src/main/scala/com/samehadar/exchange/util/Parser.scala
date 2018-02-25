@@ -1,7 +1,5 @@
 package com.samehadar.exchange.util
 
-import java.io.{File, PrintWriter}
-
 import com.samehadar.exchange.data
 import com.samehadar.exchange.data._
 
