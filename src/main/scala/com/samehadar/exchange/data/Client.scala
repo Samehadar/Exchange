@@ -9,6 +9,20 @@ package com.samehadar.exchange.data
   * @param dCount Баланс по ценной бумаге "D"
   */
 case class Client(name: String, balance: Int, aCount: Int, bCount: Int, cCount: Int, dCount: Int) extends Comparable[Client] {
+
+  def canBuy(bid: Bid): Boolean = {
+    balance >= (bid.paperCount * bid.priceForOne)
+  }
+
+  def canSell(bid: Bid): Boolean = {
+    bid.paper match {
+      case A => this.aCount >= bid.paperCount
+      case B => this.bCount >= bid.paperCount
+      case C => this.cCount >= bid.paperCount
+      case D => this.dCount >= bid.paperCount
+    }
+  }
+
   override def toString: String = {
     name + '\t' + balance + '\t' + aCount + '\t' + bCount + '\t' + cCount + '\t' + dCount
   }
@@ -18,8 +32,11 @@ case class Client(name: String, balance: Int, aCount: Int, bCount: Int, cCount: 
 
 object Client {
 
+  def dealIsPossible(buyer: Client, seller: Client, bid: Bid): Boolean = {
+    buyer.canBuy(bid) && seller.canSell(bid)
+  }
+
   def buyBid(buyer: Client, seller: Client, bid: Bid): (Client, Client) = {
-    require(buyer.balance >= (bid.paperCount * bid.priceForOne))
 
     val buyerBalance = buyer.balance - (bid.paperCount * bid.priceForOne)
     val sellerBalance = seller.balance + (bid.paperCount * bid.priceForOne)

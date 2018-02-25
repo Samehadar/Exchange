@@ -12,7 +12,11 @@ object Main extends App {
   val bids: List[Bid] = parseFile("orders.txt", objBid)
 
   val result = BidMatcher.simpleMatch(bids, clients).values.toList.sorted
+  val result2 = BidMatcher.aboveZeroMatch(bids, clients).values.toList.sorted
 
-  saveToWorkingDirectory(result, "results.txt")
-  saveToTargetDirectory(result, "results.txt")
+  saveToWorkingDirectory(result, "result.txt")
+  saveToTargetDirectory(result, "result.txt")
+
+  saveToWorkingDirectory(result2, "result2.txt")
+  saveToTargetDirectory(result2, "result2.txt")
 }

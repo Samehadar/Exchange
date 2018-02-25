@@ -23,10 +23,39 @@ object BidMatcher {
         val res = tail.find(bid.simpleMatch).map{
           case matched @ Bid(buyer, Buy, _, _, _) =>
             updatableClients = updateClients(updatableClients, buyer, bid.clientName, bid)
-            tail.filterNot(_ == matched)
+            tail.filterNot(_ eq matched)
           case matched @ Bid(seller, Sell, _, _, _) =>
             updatableClients = updateClients(updatableClients, bid.clientName, seller, bid)
-            tail.filterNot(_ == matched)
+            tail.filterNot(_ eq matched)
+        }
+        insideMatch(res getOrElse tail)
+    }
+
+    insideMatch(bids)
+
+    updatableClients
+  }
+
+  def aboveZeroMatch(bids: List[Bid], clients: Map[String, Client]): Map[String, Client] = {
+
+    var updatableClients = clients
+
+    @tailrec def insideMatch(bids: List[Bid]): Unit = bids match {
+      case Nil => ()
+      case bid :: tail =>
+        val res = tail.find{ matched =>
+          bid.simpleMatch(matched) && (matched match {
+            case Bid(buyer, Buy, _, _, _) if Client.dealIsPossible(updatableClients(buyer), updatableClients(bid.clientName), bid) => true
+            case Bid(seller, Sell, _, _, _) if Client.dealIsPossible(updatableClients(bid.clientName), updatableClients(seller), bid)  => true
+            case _ => false
+          })
+        }.map{
+          case matched @ Bid(buyer, Buy, _, _, _) =>
+            updatableClients = updateClients(updatableClients, buyer, bid.clientName, bid)
+            tail.filterNot(_ eq matched)
+          case matched @ Bid(seller, Sell, _, _, _) =>
+            updatableClients = updateClients(updatableClients, bid.clientName, seller, bid)
+            tail.filterNot(_ eq matched)
         }
         insideMatch(res getOrElse tail)
     }
