@@ -10,8 +10,6 @@ object Main extends App {
     cl => cl.name -> cl
   }.toMap
   val bids: List[Bid] = parseFile("orders.txt", objBid)
-  println(clients.size)
-  println(bids.size)
 
   val result = BidMatcher.simpleMatch(bids, clients).values.toList.sorted
 

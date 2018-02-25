@@ -37,10 +37,11 @@ object BidMatcher {
   }
 
   def updateClients(clients: Map[String, Client], buyerName: String, sellerName: String, bid: Bid): Map[String, Client] = {
-    log.debug(s"DEAL between\t buyer(${clients(buyerName)}) and \tseller(${clients(sellerName)})")
-    log.debug(s"Their bid is $bid")
+    log.debug(s"DEAL START BID($bid)")
+    log.debug(s"BUYER(${clients(buyerName)}) :: SELLER(${clients(sellerName)})")
     val (buyer, seller) = Client.buyBid(clients(buyerName), clients(sellerName), bid)
-    log.debug(s"RESULT\t buyer($buyer) and \t($seller)")
+    log.debug(s"BUYER($buyer) :: SELLER($seller)")
+    log.debug("DEAL END")
     clients + (buyerName -> buyer) + (sellerName -> seller)
   }
 
