@@ -44,11 +44,7 @@ object BidMatcher {
       case Nil => ()
       case bid :: tail =>
         val res = tail.find{ matched =>
-          bid.simpleMatch(matched) && (matched match {
-            case Bid(buyer, Buy, _, _, _) if Client.dealIsPossible(updatableClients(buyer), updatableClients(bid.clientName), bid) => true
-            case Bid(seller, Sell, _, _, _) if Client.dealIsPossible(updatableClients(bid.clientName), updatableClients(seller), bid)  => true
-            case _ => false
-          })
+          bid.simpleMatch(matched) && checkDeal(bid, matched, updatableClients)
         }.map{
           case matched @ Bid(buyer, Buy, _, _, _) =>
             updatableClients = updateClients(updatableClients, buyer, bid.clientName, bid)
@@ -63,6 +59,12 @@ object BidMatcher {
     insideMatch(bids)
 
     updatableClients
+  }
+
+  private def checkDeal(bid: Bid, matched: Bid, clients: Map[String, Client]): Boolean = matched match {
+    case Bid(buyer, Buy, _, _, _) if Client.dealIsPossible(clients(buyer), clients(bid.clientName), bid) => true
+    case Bid(seller, Sell, _, _, _) if Client.dealIsPossible(clients(bid.clientName), clients(seller), bid)  => true
+    case _ => false
   }
 
   def updateClients(clients: Map[String, Client], buyerName: String, sellerName: String, bid: Bid): Map[String, Client] = {

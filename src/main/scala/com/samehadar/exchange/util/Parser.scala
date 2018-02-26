@@ -2,11 +2,14 @@ package com.samehadar.exchange.util
 
 import com.samehadar.exchange.data
 import com.samehadar.exchange.data._
+import org.slf4j.LoggerFactory
 
 import scala.io.Source
 import scala.util.parsing.combinator.JavaTokenParsers
 
 object Parser extends JavaTokenParsers {
+
+  private val log = LoggerFactory.getLogger("PARSER")
 
   private val clientNameR = """C-?\d+""".r
   private val exchangeR = "b|s".r
@@ -17,9 +20,12 @@ object Parser extends JavaTokenParsers {
 
     src.getLines().flatMap { line =>
       parse(objParser, line) match {
-        case Success(r, _) => println(r); Some(r)
-        case Failure(msg, _) => println(msg); None
-        case Error(msg, _) => println(msg); None
+        case Success(r, _) =>   log.debug(s"PARSED :: ${r.getClass.getSimpleName}($r)")
+          Some(r)
+        case Failure(msg, _) => log.error(msg)
+          None
+        case Error(msg, _) =>   log.error(msg)
+          None
       }
     }.toList
   }
